@@ -1,4 +1,4 @@
-export const TODOS = [
+export const data = [
     {
         id: 1,
         status: "Done",
