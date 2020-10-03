@@ -1,19 +1,47 @@
 import React from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Text,
+    Dimensions,
+    TouchableOpacity,
+    swipeablefl,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
+const LeftAction = () => {
+    return (
+        <View>
+            <Text>Add to cart</Text>
+        </View>
+    );
+};
 export default function ItemCard(props) {
     return (
-        <View style={styles.container}>
-            <Ionicons
-                name={props.iconName ? props.iconName : "ios-checkmark-circle"}
-                size={35}
-                color={props.color}
-            />
-            <Text style={styles.content}>{props.content}</Text>
-        </View>
+        <TouchableOpacity
+            onPress={props.onPress}
+            onLongPress={props.onLongPress}
+        >
+            <View style={styles.container}>
+                <Ionicons
+                    name={
+                        props.iconName ? props.iconName : "ios-checkmark-circle"
+                    }
+                    size={35}
+                    color={props.color}
+                />
+                <Text
+                    style={[
+                        styles.content,
+                        { textDecorationLine: props.textDecoration },
+                    ]}
+                >
+                    {props.content}
+                </Text>
+            </View>
+        </TouchableOpacity>
     );
 }
 
@@ -27,7 +55,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 8,
-        elevation: 8,
+        elevation: 3,
     },
     content: {
         color: "white",

@@ -1,19 +1,68 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
 
-import { FlatList, TextInput } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import ItemCard from "../components/ItemCard";
-import { data } from "../ultis/data";
+import { TODOS } from "../utils/data";
 
 export default function ActiveScreen() {
+    const [data, setData] = useState(TODOS);
+    const [content, setContent] = useState("");
+
+    const onToggleTodo = (id) => {
+        const todo = data.find((todo) => todo.id === id);
+        todo.status = todo.status === "Done" ? "Active" : "Done";
+        const index = data.findIndex((todo) => todo.id === id);
+        data[index] = todo;
+        const newTodoList = [...data];
+        setData(newTodoList);
+    };
+
+    const onDeleteTodo = (id) => {
+        const newData = data.filter((item) => item.id != id);
+        setData(newData);
+    };
+
+    const onLongPressTodo = (item) => {
+        const prompt = `"${item.body}"`;
+        Alert.alert(
+            "Delete your todo?",
+            prompt,
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                },
+                { text: "OK", onPress: () => onDeleteTodo(item.id) },
+            ],
+            { cancelable: true }
+        );
+    };
+
+    const onSubmitTodo = () => {
+        const newTodo = {
+            id: length + 1,
+            status: "Active",
+            body: content,
+        };
+        const newTodoList = [newTodo, ...data];
+        setData(newTodoList);
+        setContent("");
+    };
+
+    const length = data.length;
     const renderItem = ({ item }) => {
-        const status = item.status === "Done" ? true : false;
+        const status = item.status;
         return (
             <ItemCard
-                iconName={status ? null : "ios-radio-button-off"}
-                color={status ? "#4F74FF" : "#D103FC"}
+                iconName={status === "Done" ? null : "ios-radio-button-off"}
+                color={status === "Done" ? "#4F74FF" : "#D103FC"}
                 content={item.body}
+                onPress={() => onToggleTodo(item.id)}
+                onLongPress={() => onLongPressTodo(item)}
+                textDecoration={status === "Done" ? "line-through" : ""}
             />
         );
     };
@@ -32,26 +81,26 @@ export default function ActiveScreen() {
                 Hello, Linh!
             </Text>
             <Text style={styles.header}>WHAT ARE YOU GOING TO DO?</Text>
-            <View style={[styles.inputWrapper, styles.shadow]}>
+            <View style={styles.inputWrapper}>
                 <TextInput
                     style={styles.input}
                     placeholder="Enter to-do-list"
+                    onChangeText={(text) => setContent(text)}
+                    value={content}
                 />
                 <Ionicons
                     name="ios-add-circle"
                     size={35}
                     color={"#3D47AF"}
-                    onPress={() => console.log(data)}
+                    onPress={onSubmitTodo}
                 />
             </View>
             <Text style={styles.header}>TODAY'S TASKS</Text>
 
-            {/*Circle color : #4F74FF #D103FC*/}
-
             <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => `${item.id}`}
+                keyExtractor={(item, index) => `id: ${index}`}
                 showsVerticalScrollIndicator={false}
             />
         </View>
@@ -74,12 +123,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#0A155A",
         borderRadius: 25,
         paddingHorizontal: 15,
-    },
-    shadow: {
-        shadowOffset: { width: 10, height: 10 },
-        shadowColor: "gray",
-        shadowOpacity: 1,
-        elevation: 8,
+        elevation: 3,
     },
     input: {
         width: "70%",

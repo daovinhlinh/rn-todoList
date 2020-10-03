@@ -9,7 +9,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CompleteScreen from "./screens/CompleteScreen";
 import ActiveScreen from "./screens/ActiveScreen";
 import AllScreen from "./screens/AllScreen";
-import { HeaderBackButton } from "@react-navigation/stack";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -19,7 +18,7 @@ export default function App() {
     return (
         <NavigationContainer>
             <Tab.Navigator
-                initialRouteName="Complete"
+                initialRouteName="Active"
                 tabBarOptions={{
                     activeTintColor: "black",
                 }}
