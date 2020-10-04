@@ -5,20 +5,12 @@ import {
     Text,
     Dimensions,
     TouchableOpacity,
-    swipeablefl,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
-const LeftAction = () => {
-    return (
-        <View>
-            <Text>Add to cart</Text>
-        </View>
-    );
-};
-export default function ItemCard(props) {
+export default function ItemCard(props, { navigation }) {
     return (
         <TouchableOpacity
             onPress={props.onPress}
@@ -40,6 +32,9 @@ export default function ItemCard(props) {
                 >
                     {props.content}
                 </Text>
+                <TouchableOpacity onPress={props.onDelete}>
+                    <Ionicons name="md-trash" size={30} color="white" />
+                </TouchableOpacity>
             </View>
         </TouchableOpacity>
     );
@@ -56,9 +51,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 8,
         elevation: 3,
+        justifyContent: "space-between",
     },
     content: {
         color: "white",
         marginHorizontal: 15,
+        width: width * 0.5,
     },
 });

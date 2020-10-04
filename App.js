@@ -14,11 +14,11 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default function App({ navigation }) {
     return (
         <NavigationContainer>
             <Tab.Navigator
-                initialRouteName="Active"
+                initialRouteName="All"
                 tabBarOptions={{
                     activeTintColor: "black",
                 }}
@@ -43,12 +43,12 @@ export default function App() {
                     }}
                 />
                 <Tab.Screen
-                    name="Active"
-                    component={ActiveScreen}
+                    name="All"
+                    component={AllScreen}
                     options={{
                         tabBarIcon: ({ focused, color }) => {
                             var iconName;
-                            iconName = focused ? "ios-list-box" : "ios-list";
+                            iconName = focused ? "ios-add-circle" : "ios-add";
                             return (
                                 <Ionicons
                                     name={iconName}
@@ -60,12 +60,12 @@ export default function App() {
                     }}
                 />
                 <Tab.Screen
-                    name="All"
-                    component={AllScreen}
+                    name="Active"
+                    component={ActiveScreen}
                     options={{
                         tabBarIcon: ({ focused, color }) => {
                             var iconName;
-                            iconName = focused ? "ios-add-circle" : "ios-add";
+                            iconName = focused ? "ios-list-box" : "ios-list";
                             return (
                                 <Ionicons
                                     name={iconName}
